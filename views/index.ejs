@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Think in Stats - Data Insights & Analysis</title>
+  <meta name="description" content="Professional statistics blog featuring data analysis, visualization techniques, and real-world applications of statistical methods.">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Lora:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+</head>
+<body>
+  <header>
+    <div class="container header-container">
+      <a href="/" class="blog-title">
+        <i class="fas fa-chart-line"></i> Think in <span>Stats</span>
+      </a>
+      <button class="mobile-menu-toggle" aria-label="Toggle menu">
+        <i class="fas fa-bars"></i>
+      </button>
+      <nav class="nav-menu">
+        <% if (isAdmin) { %>
+          <a href="/dashboard"><i class="fas fa-tachometer-alt"></i> <span class="nav-text">Dashboard</span></a>
+          <a href="/logout"><i class="fas fa-sign-out-alt"></i> <span class="nav-text">Logout</span></a>
+        <% } else if (showLogin) { %>
+          <a href="/login"> <span class="nav-text"></span></a>
+        <% } %>
+        <a href="/about"><i class="fas fa-info-circle"></i> <span class="nav-text">About</span></a>
+        <a href="https://paypal.me/Studyblume" target="_blank" rel="noopener noreferrer"><i class="fas fa-dollar"></i> <span class="nav-text">Support</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <% if (messages.success) { %>
+      <div class="success"><i class="fas fa-check-circle"></i> <%= messages.success %></div>
+    <% } %>
+    <% if (messages.error) { %>
+      <div class="error"><i class="fas fa-exclamation-circle"></i> <%= messages.error %></div>
+    <% } %>
+
+    <!-- Header Ad Unit -->
+    <div class="ad-unit leaderboard">
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+           data-ad-slot="XXXXXXXXXX"
+           data-ad-format="auto"
+           data-full-width-responsive="true"></ins>
+      <script>
+           (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+
+    <div class="posts-container">
+      <div class="main-content">
+        <% if (posts.length === 0) { %>
+          <div class="post-card text-center" style="padding: 40px 20px;">
+            <i class="fas fa-book-open" style="font-size: 3rem; color: var(--gray); margin-bottom: 20px;"></i>
+            <h2>No posts yet</h2>
+            <p>Check back later for new statistical insights and analysis!</p>
+          </div>
+        <% } else { %>
+          <div class="posts-grid">
+            <% posts.forEach((post, index) => { 
+              try {
+                const plainText = post.content ? post.content.replace(/<[^>]*>/g, '') : '';
+                const excerpt = plainText.length > 150 ? plainText.substring(0, 150) + '...' : plainText;
+            %>
+              <article class="post-card">
+                <% if (post.file_url && typeof post.file_url === 'string' && post.file_url.match(/\.(jpg|jpeg|png|gif)$/i)) { %>
+                  <div class="post-image-container">
+                    <img src="<%= post.file_url %>" alt="<%= post.title || 'Blog post image' %>" class="post-image" loading="lazy" onerror="this.style.display='none'">
+                  </div>
+                <% } else { %>
+                  <div class="post-image-container">
+                    <img src="/default-post-image.jpg" alt="Statistical analysis" class="post-image" loading="lazy">
+                  </div>
+                <% } %>
+                <div class="post-content">
+                  <h2 class="post-title"><%= post.title || 'Untitled Post' %></h2>
+                  <% if (post.topic) { %>
+                    <div class="post-topic">
+                      <span class="topic-badge"><%= post.topic %></span>
+                    </div>
+                  <% } %>
+                  <p class="post-excerpt"><%= excerpt %></p>
+                  <% if (post.id) { %>
+                    <a href="/post/<%= post.id %>" class="read-more">READ MORE <i class="fas fa-arrow-right"></i></a>
+                  <% } %>
+                  <div class="post-meta">
+                    <span><i class="far fa-calendar-alt"></i> <%= post.created_at ? new Date(post.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : 'No date' %></span>
+                    <span class="reading-time">
+                      <i class="far fa-clock"></i> <%= post.reading_time || 1 %> min read
+                    </span>
+                  </div>
+                </div>
+              </article>
+
+              <% if (index === 2) { %>
+                <!-- Mid-content Ad Unit -->
+                <div class="ad-unit rectangle">
+                  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                  <ins class="adsbygoogle"
+                       style="display:block"
+                       data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                       data-ad-slot="XXXXXXXXXX"
+                       data-ad-format="auto"
+                       data-full-width-responsive="true"></ins>
+                  <script>
+                       (adsbygoogle = window.adsbygoogle || []).push({});
+                  </script>
+                </div>
+              <% } %>
+            <% } catch (err) {
+              console.error('Error rendering post:', err); 
+            } %>
+            <% }) %>
+          </div>
+        <% } %>
+      </div>
+
+      <div class="sidebar">
+        <% if (topics.length > 0) { %>
+          <div class="sidebar-card">
+            <h3 class="sidebar-title">Explore by Topic</h3>
+            <div class="topic-cloud">
+              <% topics.forEach(topic => { %>
+                <a href="/topic/<%= topic.slug %>" class="topic-tag"><%= topic.name %></a>
+              <% }); %>
+            </div>
+          </div>
+        <% } %>
+
+        <!-- Sidebar Ad Unit -->
+        <div class="sidebar-card ad-unit">
+          <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+          <ins class="adsbygoogle"
+               style="display:block"
+               data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+               data-ad-slot="XXXXXXXXXX"
+               data-ad-format="auto"
+               data-full-width-responsive="true"></ins>
+          <script>
+               (adsbygoogle = window.adsbygoogle || []).push({});
+          </script>
+        </div>
+
+        <div class="sidebar-card">
+          <h3 class="sidebar-title">Subscribe</h3>
+          <p>Get the latest statistical insights delivered to your inbox</p>
+          <form class="subscribe-form">
+            <input type="email" placeholder="Your email address" class="form-control" required>
+            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;">
+              <i class="fas fa-envelope"></i> Subscribe
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container footer-container">
+      <div>
+        <p>&copy; <%= new Date().getFullYear() %> Think in Stats. All rights reserved.</p>
+        <p class="author-credit">Created by Bernard Odhiambo</p>
+      </div>
+      <div class="social-icons">
+        <a href="#" class="social-icon" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+        <a href="#" class="social-icon" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+        <a href="#" class="social-icon" aria-label="GitHub"><i class="fab fa-github"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu toggle
+    document.querySelector('.mobile-menu-toggle')?.addEventListener('click', function() {
+      document.querySelector('.nav-menu').classList.toggle('active');
+      this.setAttribute('aria-expanded', this.getAttribute('aria-expanded') === 'true' ? 'false' : 'true');
+    });
+
+    // Close mobile menu when clicking outside
+    document.addEventListener('click', function(e) {
+      const navMenu = document.querySelector('.nav-menu');
+      const toggleBtn = document.querySelector('.mobile-menu-toggle');
+      
+      if (navMenu.classList.contains('active') && 
+          !navMenu.contains(e.target) && 
+          e.target !== toggleBtn) {
+        navMenu.classList.remove('active');
+        toggleBtn.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    // Lazy load images with Intersection Observer
+    if ('IntersectionObserver' in window) {
+      const lazyImages = document.querySelectorAll('.post-image');
+      
+      const imageObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const img = entry.target;
+            img.src = img.dataset.src || img.src;
+            img.classList.add('loaded');
+            observer.unobserve(img);
+          }
+        });
+      }, {
+        rootMargin: '200px 0px'
+      });
+
+      lazyImages.forEach(img => {
+        if (!img.src) {
+          img.dataset.src = img.getAttribute('src');
+          img.removeAttribute('src');
+          imageObserver.observe(img);
+        }
+      });
+    }
+  </script>
+</body>
+</html>

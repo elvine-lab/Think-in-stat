@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | Think in Stats</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <div class="container header-container">
+      <a href="/" class="blog-title">
+        <i class="fas fa-chart-line"></i> Think in <span>Stats</span>
+      </a>
+      <nav class="nav-menu">
+        <a href="/"><i class="fas fa-home"></i> <span class="nav-text">Home</span></a>
+        <a href="/logout"><i class="fas fa-sign-out-alt"></i> <span class="nav-text">Logout</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <% if (messages.success) { %>
+      <div class="success"><i class="fas fa-check-circle"></i> <%= messages.success %></div>
+    <% } %>
+    <% if (messages.error) { %>
+      <div class="error"><i class="fas fa-exclamation-circle"></i> <%= messages.error %></div>
+    <% } %>
+
+    <div class="dashboard-header">
+      <div>
+        <h2>Dashboard</h2>
+        <p class="text-muted">Welcome back, <span class="text-primary">Bernard Odhiambo</span></p>
+      </div>
+      <div class="dashboard-actions">
+        <a href="/new-post" class="btn btn-primary">
+          <i class="fas fa-plus"></i> New Post
+        </a>
+        <button class="btn btn-secondary" id="addTopicBtn">
+          <i class="fas fa-tag"></i> Add Topic
+        </button>
+      </div>
+    </div>
+
+    <div id="addTopicForm" style="display: none; margin-bottom: 30px;">
+      <form action="/add-topic" method="POST" class="form-inline">
+        <div class="form-group" style="flex: 1;">
+          <input type="text" name="topic" class="form-control" placeholder="Enter new topic name" required>
+        </div>
+        <button type="submit" class="btn btn-primary">
+          <i class="fas fa-plus"></i> Add
+        </button>
+      </form>
+    </div>
+
+    <% if (posts.length === 0) { %>
+      <div class="post-card text-center" style="padding: 40px 20px;">
+        <i class="fas fa-pen-fancy" style="font-size: 3rem; color: var(--gray); margin-bottom: 20px;"></i>
+        <h3>No Posts Yet</h3>
+        <p>Start by creating your first blog post</p>
+        <a href="/new-post" class="btn btn-primary mt-3">
+          <i class="fas fa-plus"></i> Create Post
+        </a>
+      </div>
+    <% } else { %>
+      <div class="post-list">
+        <% posts.forEach(post => { %>
+          <div class="post-card">
+            <div class="post-content">
+              <h3><%= post.title %></h3>
+              <% if (post.topic) { %>
+                <div class="post-meta">
+                  <span class="topic-badge"><%= post.topic %></span>
+                </div>
+              <% } %>
+              <div class="post-meta">
+                <span><i class="far fa-calendar-alt"></i> <%= new Date(post.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></span>
+                <span class="reading-time">
+                  <i class="far fa-clock"></i> <%= post.reading_time || 1 %> min read
+                </span>
+              </div>
+              <div class="post-actions">
+                <a href="/post/<%= post.id %>" class="btn btn-primary">
+                  <i class="fas fa-eye"></i> View
+                </a>
+                <a href="/edit-post/<%= post.id %>" class="btn btn-secondary">
+                  <i class="fas fa-edit"></i> Edit
+                </a>
+                <form action="/delete-post/<%= post.id %>" method="POST" class="inline-form">
+                  <input type="hidden" name="_method" value="DELETE">
+                  <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this post? This action cannot be undone.')">
+                    <i class="fas fa-trash"></i> Delete
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    <% } %>
+
+    <% if (topics.length > 0) { %>
+      <div class="topic-management">
+        <h3>Manage Topics</h3>
+        <div class="topic-list">
+          <% topics.forEach(topic => { %>
+            <div class="topic-item">
+              <span><%= topic.name %></span>
+              <form action="/delete-topic/<%= topic.id %>" method="POST" class="inline-form">
+                <input type="hidden" name="_method" value="DELETE">
+                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this topic?')">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </form>
+            </div>
+          <% }); %>
+        </div>
+      </div>
+    <% } %>
+  </main>
+
+  <script>
+    // Toggle topic form
+    document.getElementById('addTopicBtn').addEventListener('click', function() {
+      const form = document.getElementById('addTopicForm');
+      form.style.display = form.style.display === 'none' ? 'block' : 'none';
+    });
+
+    // Confirm before deleting
+    document.querySelectorAll('.btn-danger').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        if (!confirm('Are you sure you want to delete this post? This action cannot be undone.')) {
+          e.preventDefault();
+        }
+      });
+    });
+
+    // Style for topic management
+    const style = document.createElement('style');
+    style.textContent = `
+      .topic-management {
+        margin-top: 40px;
+        padding-top: 20px;
+        border-top: 1px solid #eee;
+      }
+      .topic-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 15px;
+      }
+      .topic-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: #f5f5f5;
+        padding: 8px 15px;
+        border-radius: 20px;
+      }
+      .dashboard-actions {
+        display: flex;
+        gap: 10px;
+      }
+      @media (max-width: 768px) {
+        .dashboard-actions {
+          flex-direction: column;
+          width: 100%;
+        }
+        .dashboard-actions .btn {
+          width: 100%;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  </script>
+</body>
+</html>

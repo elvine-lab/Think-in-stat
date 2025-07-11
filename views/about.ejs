@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About | Think in Stats</title>
+  <meta name="description" content="Learn about Think in Stats - delivering cutting-edge statistical analysis and internationally comparable insights">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script>
+</head>
+<body>
+  <header>
+    <div class="container header-container">
+      <a href="/" class="blog-title">
+        <i class="fas fa-chart-line"></i> Think in <span>Stats</span>
+      </a>
+      <nav class="nav-menu">
+        <% if (isAdmin) { %>
+          <a href="/dashboard"><i class="fas fa-tachometer-alt"></i> <span class="nav-text">Dashboard</span></a>
+          <a href="/logout"><i class="fas fa-sign-out-alt"></i> <span class="nav-text">Logout</span></a>
+        <% } else if (showLogin) { %>
+          <a href="/login"> <span class="nav-text"></span></a>
+        <% } %>
+        <a href="/about"><i class="fas fa-info-circle"></i> <span class="nav-text">About</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="about-page">
+      <h1>About Think in Stats</h1>
+      <div class="reading-time">< 1 minute</div>
+      
+      <div class="about-content">
+        <p>The Think in Stats delivers cutting-edge statistical analysis and produces internationally comparable insights across a wide range of economic and social topics. Our blog brings together data stories from research institutions and the global statistical community.</p>
+        
+        <!-- Ad Unit -->
+        <div class="ad-unit">
+          <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+          <ins class="adsbygoogle"
+               style="display:block; text-align:center;"
+               data-ad-layout="in-article"
+               data-ad-format="fluid"
+               data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+               data-ad-slot="XXXXXXXXXX"></ins>
+          <script>
+               (adsbygoogle = window.adsbygoogle || []).push({});
+          </script>
+        </div>
+        
+        <div class="subscribe-section">
+          <h3>Stay Updated with Our Analysis</h3>
+          <p>Enter your email address to subscribe to the blog and receive the latest statistical insights directly to your inbox.</p>
+          <form class="subscribe-form">
+            <input type="email" placeholder="Type your email..." class="form-control" required>
+            <button type="submit" class="btn btn-primary">Subscribe</button>
+          </form>
+        </div>
+        
+        <p>To learn more about our statistical work and data resources, please visit: 
+          <a href="https://www.example.org/statistics" target="_blank" rel="noopener noreferrer">https://www.example.org/statistics</a>
+        </p>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container footer-container">
+      <div>
+        <p>&copy; <%= new Date().getFullYear() %> Think in Stats. All rights reserved.</p>
+        <p class="author-credit">Created by Bernard Odhiambo</p>
+      </div>
+    </div>
+  </footer>
+
+  <style>
+    .about-page {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem 0;
+    }
+    
+    .about-page h1 {
+      font-size: 2.5rem;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+      font-family: 'Merriweather', serif;
+      font-weight: 700;
+    }
+    
+    .reading-time {
+      color: var(--gray);
+      font-size: 0.9rem;
+      margin-bottom: 2rem;
+      font-style: italic;
+    }
+    
+    .about-content {
+      line-height: 1.8;
+      font-size: 1.1rem;
+      color: #444;
+    }
+    
+    .about-content p {
+      margin-bottom: 1.8rem;
+    }
+    
+    .subscribe-section {
+      background: var(--light-gray);
+      padding: 2rem;
+      border-radius: var(--border-radius);
+      margin: 3rem 0;
+      text-align: center;
+    }
+    
+    .subscribe-section h3 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: var(--primary);
+    }
+    
+    .subscribe-section p {
+      margin-bottom: 1.5rem;
+      font-weight: 500;
+      color: #555;
+    }
+    
+    .subscribe-form {
+      display: flex;
+      gap: 0.5rem;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+    
+    .subscribe-form .form-control {
+      flex: 1;
+      padding: 0.9rem 1.2rem;
+      font-size: 1rem;
+    }
+    
+    .author-credit {
+      font-size: 0.9rem;
+      color: var(--gray);
+      margin-top: 0.5rem;
+    }
+    
+    .ad-unit {
+      margin: 2.5rem 0;
+      padding: 1rem;
+      background: #f9f9f9;
+      border-radius: var(--border-radius);
+    }
+    
+    @media (max-width: 768px) {
+      .subscribe-form {
+        flex-direction: column;
+      }
+      
+      .about-page {
+        padding: 1.5rem 0;
+      }
+      
+      .about-page h1 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</body>
+</html>
